@@ -1,59 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { UserInput } from './modules for gender/UserInput'
 import { BtnGetGender } from './modules for gender/BtnGetGender'
 import { Result } from './modules for gender/Result'
 import { searchName } from './modules for gender/network'
 import { UserWarning } from './modules for gender/UserWarning'
 
-export class App extends React.Component {
-  constructor(props) {
-    super(props);
+export function App() {
+  const [userName, setUserName] = useState('');
+  const [userGender, setUserGender] = useState('Нигер');
+  const [userCountry, setUserCountry] = useState('Бездомный');
+  const [warning, setWarning] = useState('');
 
-    this.state = {
-      userName: '',
-      userGender: 'Нигер',
-      userCountry: 'Бездомный',
-      warning: ''
-    }
-
-    this.nameChange = this.nameChange.bind(this);
-    this.sendNameChangeGender = this.sendNameChangeGender.bind(this);
+  function nameChange(e) {
+    setUserName(e)
   }
 
-  nameChange(e) {
-    this.setState({userName: e})
-  }
-
-  async sendNameChangeGender(e) {
+  async function sendNameChangeGender(e) {
     e.preventDefault();
-    const nameData =  await searchName(this.state.userName);
-    const countryData = await searchName(this.state.userName, true);
+    const nameData =  await searchName(userName);
+    const countryData = await searchName(userName, true);
 
     if (countryData == "Cannot read properties of undefined (reading 'country_id')") {
-      this.setState({
-        warning: 'Введи нормальное имя'
-      })
+      setWarning('Введи нормальное имя');
     } else {
-      this.setState({
-        userGender: nameData,
-        userCountry: countryData,
-        warning: '',
-        userName: '',
-      })
+      setUserGender(nameData);
+      setUserCountry(countryData);
+      setWarning('');
+      setUserName('');
     }
   }
 
-  render() {
     return(
-      <form onSubmit={this.sendNameChangeGender}>
-        <UserInput onNameChange={this.nameChange} userValue={this.state.userName} />
+      <form onSubmit={sendNameChangeGender}>
+        <UserInput onNameChange={nameChange} userValue={userName} />
         <BtnGetGender />
-        <Result userGender={this.state.userGender} userCountry={this.state.userCountry} />
-        {this.state.warning
-          ? <UserWarning warningMessage={this.state.warning}  />
+        <Result userGender={userGender} userCountry={userCountry} />
+        {warning
+          ? <UserWarning warningMessage={warning}  />
           : false
         }
       </form>
     )
-  }
 }
