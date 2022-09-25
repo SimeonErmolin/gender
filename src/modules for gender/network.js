@@ -8,8 +8,7 @@ export async function searchName(name, country) {
     const url = `${nameUrl}?name=${userName}`;
 
       const response = await fetch(url);
-      const result = await response.json();
-      return result.gender;
+      return response.json()
   } else {
     const url = `${counryUrl}?name=${userName}`;
 
