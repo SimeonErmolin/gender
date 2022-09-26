@@ -2,15 +2,17 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './App'
 import './style.css'
-import {applyMiddleware, createStore} from "redux";
-import {genderApp} from "./redux/reducers.js";
-import thunk from "redux-thunk";
+import genderSlice from "./redux/redux.js"
 import {Provider} from "react-redux";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
 
-const store = createStore(
-    genderApp,
-    applyMiddleware(thunk)
-)
+const rootReducer = combineReducers({
+    genderApp: genderSlice
+})
+
+export const store = configureStore({
+    reducer: rootReducer
+})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

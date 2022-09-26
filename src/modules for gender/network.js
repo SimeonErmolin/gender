@@ -1,23 +1,32 @@
+import {createAsyncThunk} from "@reduxjs/toolkit";
+
 const nameUrl = 'https://api.genderize.io';
 const counryUrl = 'https://api.nationalize.io';
 
-export async function searchName(name, country) {
-  const userName = name;
+export const searchGender = createAsyncThunk(
+    'gender/searchGender',
+    async function (name) {
+        const url = `${nameUrl}?name=${name}`;
 
-  if (!country) {
-    const url = `${nameUrl}?name=${userName}`;
+        const response = await fetch(url);
+        const data = await response.json();
 
-      const response = await fetch(url);
-      return response.json()
-  } else {
-    const url = `${counryUrl}?name=${userName}`;
+        if (data.gender == null) return ''
 
-    try {
-      const response = await fetch(url);
-      const result = await response.json();
-      return result.country[0].country_id;
-    } catch (error) {
-      return error.message
+        return data.gender;
     }
-  }
-}
+)
+
+export const searchCountry = createAsyncThunk(
+    'gender/searchCountry',
+    async function (name) {
+        const url = `${counryUrl}?name=${name}`;
+
+        const response = await fetch(url);
+        const result = await response.json();
+
+        if (result.country.length === 0) return 'Введи корректное имя'
+
+        return result.country[0].country_id;
+    }
+)

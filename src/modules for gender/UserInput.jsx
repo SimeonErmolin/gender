@@ -1,12 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
-import {userName} from "../redux/actions.js";
+import {changeName} from "../redux/redux.js";
+import {store} from "../main.jsx";
 
 export function UserInput() {
-  const name = useSelector(state => state.changeName.name)
+  const name = useSelector(state => state.genderApp.userName)
   const dispatch = useDispatch()
 
   function handleChange(e) {
-    dispatch(userName(e.target.value))
+    dispatch(changeName(e.target.value))
   }
 
   return (

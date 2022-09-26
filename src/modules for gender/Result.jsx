@@ -1,8 +1,8 @@
 import {useSelector} from "react-redux";
 
 export function Result() {
-    const gender = useSelector(state => state.changeGender.gender)
-    const country = useSelector(state => state.changeCountry.country)
+    const gender = useSelector(state => state.genderApp.gender)
+    const country = useSelector(state => state.genderApp.country)
 
     return (
     <div>

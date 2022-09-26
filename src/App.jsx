@@ -4,18 +4,19 @@ import { BtnGetGender } from './modules for gender/BtnGetGender'
 import { Result } from './modules for gender/Result'
 import { UserWarning } from './modules for gender/UserWarning'
 import {useDispatch, useSelector} from "react-redux";
-import {getNameData, userName} from "./redux/actions.js";
+import {searchCountry, searchGender} from "./modules for gender/network.js";
+import {changeName} from "./redux/redux.js";
 
 export function App() {
-  const name = useSelector(state => state.changeName.name);
-  const warning = useSelector(state => state.changeWarning.warning)
+  const name = useSelector(state => state.genderApp.userName);
+  const warning = useSelector(state => state.genderApp.warning);
   const dispatch = useDispatch();
 
   function sendNameChangeGender(e) {
     e.preventDefault();
-
-    dispatch(getNameData(name))
-    dispatch(userName(''))
+    dispatch(searchGender(name))
+    dispatch(searchCountry(name))
+    dispatch(changeName(''))
   }
 
     return(
